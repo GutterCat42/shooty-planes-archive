@@ -1,0 +1,105 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Scripts/Carrier.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/carrierdummy.png" type="Texture" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/Water.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Camera.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/PlayerPlane.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Cloud.tscn" type="PackedScene" id=8]
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 28.0
+height = 314.0
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec2 scale;
+uniform float y_zoom;
+uniform vec4 water_color : hint_color;
+uniform sampler2D noise;
+uniform vec2 distortion_scale;
+uniform float intensity;
+uniform float speed;
+uniform float wave_amplitude;
+uniform float wave_speed;
+uniform float wave_period;
+
+void fragment() {
+	float waves  = UV.y * scale.y + sin(UV.x * scale.x / wave_period - TIME * wave_speed) * cos(0.2 * UV.x * scale.x / wave_period + TIME - wave_speed) * wave_amplitude - wave_amplitude;
+	
+	float distortion = texture(noise, UV * scale * distortion_scale + TIME * speed).x;
+	distortion -= 0.5;
+	
+	float uv_height = SCREEN_PIXEL_SIZE.y / TEXTURE_PIXEL_SIZE.y;
+	vec2 reflected_screenuv = vec2(SCREEN_UV.x - distortion * intensity * y_zoom, SCREEN_UV.y + uv_height * UV.y * scale.y * y_zoom * 2.0);
+	
+	vec4 reflection = texture(SCREEN_TEXTURE, reflected_screenuv);
+	COLOR.rgb = mix(reflection.rgb, water_color.rgb, water_color.a);
+	COLOR.a = smoothstep(0.1, 0.13, waves);
+}"
+
+[sub_resource type="OpenSimplexNoise" id=3]
+period = 89.2
+
+[sub_resource type="NoiseTexture" id=4]
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/scale = Vector2( 64.8125, 117.391 )
+shader_param/y_zoom = 2.7905
+shader_param/water_color = Color( 0.164706, 0.435294, 0.85098, 0.478431 )
+shader_param/distortion_scale = Vector2( 0.535, 0.16 )
+shader_param/intensity = 0.139
+shader_param/speed = 0.122
+shader_param/wave_amplitude = 0.071
+shader_param/wave_speed = 0.196
+shader_param/wave_period = 0.22
+shader_param/noise = SubResource( 4 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 32.0154, 31.4839 )
+
+[node name="Carrier" type="Node2D"]
+script = ExtResource( 1 )
+plane = ExtResource( 7 )
+cloud = ExtResource( 8 )
+
+[node name="Carrier" type="StaticBody2D" parent="."]
+position = Vector2( 55, 446 )
+
+[node name="Carrierdummy" type="Sprite" parent="Carrier"]
+texture = ExtResource( 3 )
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Carrier"]
+position = Vector2( 0, 25 )
+rotation = 1.5708
+shape = SubResource( 5 )
+
+[node name="Spawnpoint" type="Node2D" parent="Carrier"]
+position = Vector2( -36, -16 )
+
+[node name="Water" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.435294 )
+material = SubResource( 2 )
+position = Vector2( 38, 3680 )
+scale = Vector2( 500, 100 )
+texture = ExtResource( 4 )
+script = ExtResource( 5 )
+
+[node name="WaterArea" type="Area2D" parent="Water" groups=["Water"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Water/WaterArea"]
+position = Vector2( 0.0462866, 0.401436 )
+shape = SubResource( 6 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+script = ExtResource( 6 )
+normal_zoom = 0.5
+
+[connection signal="item_rect_changed" from="Water" to="Water" method="_on_Water_item_rect_changed"]

@@ -1,0 +1,345 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://Other Resources/Shooty Planes Theme.tres" type="Theme" id=2]
+[ext_resource path="res://Sprites/prototypeWelcome.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/VolumeSlider.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Stats.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/RebindButton.tscn" type="PackedScene" id=6]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="Main" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -908.0
+margin_top = 19.0
+margin_right = -804.0
+margin_bottom = 183.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 3, 3 )
+theme = ExtResource( 2 )
+alignment = 1
+
+[node name="1PButton" type="Button" parent="Main"]
+margin_right = 104.0
+margin_bottom = 20.0
+focus_neighbour_top = NodePath("../QuitButton")
+text = "SINGLEPLAYER"
+
+[node name="2PButton" type="Button" parent="Main"]
+margin_top = 24.0
+margin_right = 104.0
+margin_bottom = 44.0
+text = "COOPERATIVE"
+
+[node name="DeathmatchButton" type="Button" parent="Main"]
+margin_top = 48.0
+margin_right = 104.0
+margin_bottom = 68.0
+text = "DEATHMATCH"
+
+[node name="OptionsButton" type="Button" parent="Main"]
+margin_top = 72.0
+margin_right = 104.0
+margin_bottom = 92.0
+text = "OPTIONS"
+
+[node name="HelpButton" type="Button" parent="Main"]
+margin_top = 96.0
+margin_right = 104.0
+margin_bottom = 116.0
+text = "HELP"
+
+[node name="StatsButton" type="Button" parent="Main"]
+margin_top = 120.0
+margin_right = 104.0
+margin_bottom = 140.0
+text = "STATS"
+
+[node name="QuitButton" type="Button" parent="Main"]
+margin_top = 144.0
+margin_right = 104.0
+margin_bottom = 164.0
+focus_neighbour_bottom = NodePath("../1PButton")
+text = "EXIT"
+
+[node name="Help" type="VBoxContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -648.0
+margin_top = -531.0
+margin_right = -216.0
+margin_bottom = -177.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 3, 3 )
+theme = ExtResource( 2 )
+alignment = 1
+
+[node name="HelpLabel" type="RichTextLabel" parent="Help"]
+margin_top = 15.0
+margin_right = 432.0
+margin_bottom = 315.0
+text = "Press Backspace to return to menu. Press space to toggle time slow. Go into Options > Remap controls to see the controls for flying. Both sets of controls are active in singleplayer. Remaps are not persistent (yet).
+
+Coloured-in green arrow means you have missile lock on that plane. Red arrows point to enemies that want you dead. The enemy planes will fly towards your character and fight you to the death once they see you.
+
+Stats autosave every minute, and when you exit the game (using the QUIT button in the main menu).
+
+Please note that audio currently only works in singleplayer. I'm sorry but the minimap is the same. Nametags in split screen are weird for some reason. Also, ignore the way the carriers 'float'. And the 'Missiles shot down' statistic is broken. Sorry!
+
+If you find any other bugs that I haven't listed above, please don't hesitate to let me know."
+fit_content_height = true
+
+[node name="HelpBackButton" type="Button" parent="Help"]
+margin_top = 319.0
+margin_right = 432.0
+margin_bottom = 339.0
+focus_neighbour_top = NodePath("../QuitButton")
+text = "BACK"
+
+[node name="Options" type="VBoxContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 641.0
+margin_top = 374.0
+margin_right = -1066.0
+margin_bottom = -590.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 3, 3 )
+theme = ExtResource( 2 )
+alignment = 1
+
+[node name="SplitScreenButton" type="Button" parent="Options"]
+margin_right = 213.0
+margin_bottom = 20.0
+focus_neighbour_top = NodePath("../QuitButton")
+text = "SPLIT SCREEN: ON"
+
+[node name="NametagsButton" type="Button" parent="Options"]
+margin_top = 24.0
+margin_right = 213.0
+margin_bottom = 44.0
+focus_neighbour_top = NodePath("../QuitButton")
+text = "ALWAYS SHOW NAMETAGS: ON"
+
+[node name="RemapButton" type="Button" parent="Options"]
+margin_top = 48.0
+margin_right = 213.0
+margin_bottom = 68.0
+text = "REMAP CONTROLS"
+
+[node name="VolumeSlider" parent="Options" instance=ExtResource( 4 )]
+margin_left = 0.0
+margin_top = 72.0
+margin_bottom = 110.0
+
+[node name="VolumeSlider2" parent="Options" instance=ExtResource( 4 )]
+margin_left = 0.0
+margin_top = 114.0
+margin_bottom = 152.0
+globalsProperty = "tones"
+labelText = "Targeting Tones Volume:"
+
+[node name="MinimapButton" type="Button" parent="Options"]
+margin_top = 156.0
+margin_right = 213.0
+margin_bottom = 176.0
+text = "MINIMAP: ON"
+
+[node name="CamZoom" type="HBoxContainer" parent="Options"]
+margin_top = 180.0
+margin_right = 213.0
+margin_bottom = 196.0
+
+[node name="Label" type="Label" parent="Options/CamZoom"]
+margin_top = 1.0
+margin_right = 89.0
+margin_bottom = 15.0
+text = "Camera FOV"
+
+[node name="CamZoomSlider" type="HSlider" parent="Options/CamZoom"]
+margin_left = 93.0
+margin_right = 213.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 1.5
+step = 0.1
+value = 1.0
+
+[node name="OptionsBackButton" type="Button" parent="Options"]
+margin_top = 200.0
+margin_right = 213.0
+margin_bottom = 220.0
+focus_neighbour_top = NodePath("../QuitButton")
+text = "BACK"
+
+[node name="Remap" type="VBoxContainer" parent="."]
+visible = false
+margin_left = 576.0
+margin_top = 376.0
+margin_right = 832.0
+margin_bottom = 540.0
+rect_scale = Vector2( 3, 3 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Remap"]
+margin_right = 256.0
+margin_bottom = 140.0
+
+[node name="P1" type="VBoxContainer" parent="Remap/HBoxContainer"]
+margin_right = 126.0
+margin_bottom = 140.0
+size_flags_horizontal = 3
+
+[node name="P1UP" parent="Remap/HBoxContainer/P1" instance=ExtResource( 6 )]
+margin_right = 126.0
+margin_bottom = 20.0
+
+[node name="P1DOWN" parent="Remap/HBoxContainer/P1" instance=ExtResource( 6 )]
+margin_top = 24.0
+margin_right = 126.0
+margin_bottom = 44.0
+action = "p1_down"
+
+[node name="P1LEFT" parent="Remap/HBoxContainer/P1" instance=ExtResource( 6 )]
+margin_top = 48.0
+margin_right = 126.0
+margin_bottom = 68.0
+action = "p1_left"
+
+[node name="P1RIGHT" parent="Remap/HBoxContainer/P1" instance=ExtResource( 6 )]
+margin_top = 72.0
+margin_right = 126.0
+margin_bottom = 92.0
+action = "p1_right"
+
+[node name="P1GUN" parent="Remap/HBoxContainer/P1" instance=ExtResource( 6 )]
+margin_top = 96.0
+margin_right = 126.0
+margin_bottom = 116.0
+action = "p1_gun"
+
+[node name="P1MISSILE" parent="Remap/HBoxContainer/P1" instance=ExtResource( 6 )]
+margin_top = 120.0
+margin_right = 126.0
+margin_bottom = 140.0
+action = "p1_missile"
+
+[node name="P2" type="VBoxContainer" parent="Remap/HBoxContainer"]
+margin_left = 130.0
+margin_right = 256.0
+margin_bottom = 140.0
+size_flags_horizontal = 3
+
+[node name="P2UP" parent="Remap/HBoxContainer/P2" instance=ExtResource( 6 )]
+margin_right = 126.0
+margin_bottom = 20.0
+action = "p2_up"
+
+[node name="P2DOWN" parent="Remap/HBoxContainer/P2" instance=ExtResource( 6 )]
+margin_top = 24.0
+margin_right = 126.0
+margin_bottom = 44.0
+action = "p2_down"
+
+[node name="P2LEFT" parent="Remap/HBoxContainer/P2" instance=ExtResource( 6 )]
+margin_top = 48.0
+margin_right = 126.0
+margin_bottom = 68.0
+action = "p2_left"
+
+[node name="P2RIGHT" parent="Remap/HBoxContainer/P2" instance=ExtResource( 6 )]
+margin_top = 72.0
+margin_right = 126.0
+margin_bottom = 92.0
+action = "p2_right"
+
+[node name="P2GUN" parent="Remap/HBoxContainer/P2" instance=ExtResource( 6 )]
+margin_top = 96.0
+margin_right = 126.0
+margin_bottom = 116.0
+action = "p2_gun"
+
+[node name="P2MISSILE" parent="Remap/HBoxContainer/P2" instance=ExtResource( 6 )]
+margin_top = 120.0
+margin_right = 126.0
+margin_bottom = 140.0
+action = "p2_missile"
+
+[node name="RemapBackButton" type="Button" parent="Remap"]
+margin_top = 144.0
+margin_right = 256.0
+margin_bottom = 164.0
+size_flags_horizontal = 3
+text = "BACK"
+
+[node name="Stats" type="VBoxContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 641.0
+margin_top = 374.0
+margin_right = -1066.0
+margin_bottom = -668.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 3, 3 )
+theme = ExtResource( 2 )
+alignment = 1
+
+[node name="StatsLabel" type="Label" parent="Stats"]
+margin_right = 213.0
+margin_bottom = 14.0
+align = 1
+script = ExtResource( 5 )
+
+[node name="StatsBackButton" type="Button" parent="Stats"]
+margin_top = 18.0
+margin_right = 213.0
+margin_bottom = 38.0
+text = "BACK"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1800.0
+margin_top = 1038.0
+margin_right = 1840.0
+margin_bottom = 1052.0
+rect_scale = Vector2( 3, 3 )
+text = "v0.24"
+
+[connection signal="pressed" from="Main/1PButton" to="." method="_on_1PButton_pressed"]
+[connection signal="pressed" from="Main/2PButton" to="." method="_on_2PButton_pressed"]
+[connection signal="pressed" from="Main/DeathmatchButton" to="." method="_on_DeathmatchButton_pressed"]
+[connection signal="pressed" from="Main/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="Main/HelpButton" to="." method="_on_HelpButton_pressed"]
+[connection signal="pressed" from="Main/StatsButton" to="." method="_on_StatsButton_pressed"]
+[connection signal="pressed" from="Main/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="Help/HelpBackButton" to="." method="_on_HelpBackButton_pressed"]
+[connection signal="pressed" from="Options/SplitScreenButton" to="." method="_on_SplitScreenButton_pressed"]
+[connection signal="pressed" from="Options/NametagsButton" to="." method="_on_NametagsButton_pressed"]
+[connection signal="pressed" from="Options/RemapButton" to="." method="_on_RemapButton_pressed"]
+[connection signal="pressed" from="Options/MinimapButton" to="." method="_on_MinimapButton_pressed"]
+[connection signal="value_changed" from="Options/CamZoom/CamZoomSlider" to="." method="_on_CamZoomSlider_value_changed"]
+[connection signal="pressed" from="Options/OptionsBackButton" to="." method="_on_OptionsBackButton_pressed"]
+[connection signal="pressed" from="Remap/RemapBackButton" to="." method="_on_RemapBackButton_pressed"]
+[connection signal="pressed" from="Stats/StatsBackButton" to="." method="_on_StatsBackButton_pressed"]
